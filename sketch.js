@@ -2,10 +2,10 @@ const points = [];
 const hull = [];
 
 let leftMost;
-let currentVertex;
+let currVer;
 let index=2;
 let nextIndex = -1;
-let nextVertex;
+let nextVer;
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
@@ -20,9 +20,9 @@ function setup() {
   }
   points.sort((a, b) => a.x - b.x);
   leftMost = points[0];
-  currentVertex = leftMost;
-  hull.push(currentVertex);
-  nextVertex = points[1];
+  currVer = leftMost;
+  hull.push(currVer);
+  nextVer = points[1];
 }
 
 function draw() {
@@ -48,34 +48,34 @@ function draw() {
 
   stroke("cyan");
   strokeWeight(4);
-  point(currentVertex.x, currentVertex.y);
+  point(currVer.x, currVer.y);
 
   stroke("darkgreen");
   strokeWeight(2);
-  line(currentVertex.x, currentVertex.y, nextVertex.x, nextVertex.y);
+  line(currVer.x, currVer.y, nextVer.x, nextVer.y);
 
   let checking = points[index];
   stroke("yellow");
-  line(currentVertex.x, currentVertex.y, checking.x, checking.y);
+  line(currVer.x, currVer.y, checking.x, checking.y);
 
-  const a = p5.Vector.sub(nextVertex, currentVertex);
-  const b = p5.Vector.sub(checking, currentVertex);
+  const a = p5.Vector.sub(nextVer, currVer);
+  const b = p5.Vector.sub(checking, currVer);
   const cross = a.cross(b);
 
   if (cross.z < 0) {
-    nextVertex = checking;
+    nextVer = checking;
     nextIndex = index;
   }
 
   index += 1;
   if (index == points.length) {
-    if (nextVertex == leftMost) {
+    if (nextVer == leftMost) {
       noLoop();
     } else {
-      hull.push(nextVertex);
-      currentVertex = nextVertex;
+      hull.push(nextVer);
+      currVer = nextVer;
       index = 0;
-      nextVertex = leftMost;
+      nextVer = leftMost;
     }
   }
 }
